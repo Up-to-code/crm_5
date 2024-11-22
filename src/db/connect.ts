@@ -1,16 +1,18 @@
-import mongoose from "mongoose";
+const mongoose = await import("mongoose");
 
 const connect = async () => {
- 
-  if (mongoose.connection.readyState === 1) {
-    return;
-  }
-  try {
-    await mongoose.connect(process.env.NEXT_PUBLIC_MONGO_URI as string);
-    console.log("MongoDB Connected");
-  } catch (error) {
-    console.error(error);
-    process.exit(1);
+  // Check if the connection is not established
+  if (mongoose.connection.readyState === 0) {
+    // Establish the connection if it's not already connected
+    try {
+      await mongoose.connect(process.env.MONGODB_URI as string);
+      console.log("MongoDB connected successfully.");
+    } catch (error) {
+      console.error("Error connecting to MongoDB:", error);
+    }
+  } else if (mongoose.connection.readyState === 1) {
+    // Already connected, no need to reconnect
+    console.log("MongoDB is already connected.");
   }
 };
 
