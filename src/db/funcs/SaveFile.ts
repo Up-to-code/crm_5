@@ -18,6 +18,7 @@ export const SaveFile = async (ctx: {
     });
 
     const savedFileData = await fileData.save();
+  
     console.log("Saved file data:", savedFileData);
     return savedFileData;
   } catch (error) {
